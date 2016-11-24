@@ -27,7 +27,7 @@ Rails.application.configure do
   end
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -42,17 +42,32 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  config.action_mailer.smtp_settings = {
-    address: "smtp.sendgrid.net",
-    port: 587,
-    domain: Rails.application.secrets.domain_name,
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: Rails.application.secrets.email_provider_username,
-    password: Rails.application.secrets.email_provider_password
-  }
+  #Default settings when JV cloned project - trying mailgun for now
+ # config.action_mailer.smtp_settings = {
+ #   address: "smtp.sendgrid.net",
+  #  port: 587,
+  #  domain: Rails.application.secrets.domain_name,
+ #   authentication: "plain",
+  #  enable_starttls_auto: true,
+ #   user_name: Rails.application.secrets.email_provider_username,
+ #   password: Rails.application.secrets.email_provider_password
+ # }
+ 
+ # Mailgun settings JV copied from Learn Rails Tutorial
+ config.action_mailer.smtp_settings = {
+  address: "smtp.mailgun.org",
+  port: 2525,
+  domain: "mailgun.texasestatedocs.com",
+  authentication: "plain",
+  user_name: ENV["MAILGUN_USERNAME"],
+  password: ENV["MAILGUN_PASSWORD"]
+}
+
+ 
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  #config.action_mailer.default_url_options = { :host => 'localhost:8080' }
+  config.action_mailer.default_url_options = { host: '0.0.0.0:8080' }
+  # DEFAULT when JV cloned repository config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.raise_delivery_errors = true
   # Send email in development mode?
